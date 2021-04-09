@@ -20,7 +20,12 @@ namespace Domain
         }
         public IEnumerable<Command> GetAllCommand()
         {
-            return _commanderRepository.GetAllCommand();
+            return _commanderRepository.GetAllCommandRepo();
+        }
+
+        public Command GetCommandById(int id)
+        {
+            return _commanderRepository.GetCommandByIdRepo(id);
         }
 
         public bool SaveChanges()

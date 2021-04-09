@@ -21,7 +21,7 @@ namespace DataAccess
             _commanderDBContext = commanderDBContext;
             _mapper = mapper;
         }
-        public IEnumerable<Command> GetAllCommand()
+        public IEnumerable<Command> GetAllCommandRepo()
         {
             var data = _commanderDBContext.TblCommands.ToList();
 
@@ -30,6 +30,14 @@ namespace DataAccess
             return responseData;
            //return _context.tblCommands.ToList();
         }
+
+        public Command GetCommandByIdRepo(int id)
+        {
+            var data = _commanderDBContext.TblCommands.FirstOrDefault(x => x.Id == id);
+            var responseData = _mapper.Mapper.Map<Command>(data);
+            return responseData;
+        }
+
         public bool SaveChanges()
         {
             throw new NotImplementedException();

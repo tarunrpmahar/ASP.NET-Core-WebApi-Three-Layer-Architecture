@@ -10,8 +10,8 @@ namespace Domain.Contracts.Repository
     public interface ICommanderRepository
     {
         bool SaveChanges();
-        IEnumerable<Command> GetAllCommand();
-        //Command GetCommandById(int id);
+        IEnumerable<Command> GetAllCommandRepo();
+        Command GetCommandByIdRepo(int id);
         //void CreateCommand(Command cmd);
         //void UpdateCommand(Command cmd);
         //void DeleteCommand(Command cmd);

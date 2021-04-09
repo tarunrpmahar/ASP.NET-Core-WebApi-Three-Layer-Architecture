@@ -31,5 +31,12 @@ namespace ApiThreeLayerArch.Controllers
             return new OkObjectResult(result);
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<Command> GetById(int id)
+        {
+            var response = _commander.GetCommandById(id);
+            var result = _mapper.Mapper.Map<CommandDTO>(response);
+            return Ok(result);
+        }
     }
 }
