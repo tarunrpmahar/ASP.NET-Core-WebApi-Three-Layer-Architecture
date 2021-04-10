@@ -18,6 +18,12 @@ namespace Domain
         {
             _commanderRepository = commanderRepository;
         }
+
+        public Command CreateCommand(Command command)
+        {
+            return _commanderRepository.CreateCommandRepo(command);
+        }
+
         public IEnumerable<Command> GetAllCommand()
         {
             return _commanderRepository.GetAllCommandRepo();

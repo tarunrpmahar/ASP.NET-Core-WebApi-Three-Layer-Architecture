@@ -20,6 +20,10 @@ namespace Utility
                 cfg.CreateMap<TblCommand, Command>();
                 cfg.CreateMap<Command, CommandDTO>();
                 cfg.CreateMap<TblCommand, CommandDTO>();
+
+                cfg.CreateMap<CommandDTO, Command>();  //Create
+
+                cfg.CreateMap<Command, TblCommand>();
             });
             Mapper = config.CreateMapper();
 

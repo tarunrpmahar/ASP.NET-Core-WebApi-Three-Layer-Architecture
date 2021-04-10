@@ -21,6 +21,17 @@ namespace DataAccess
             _commanderDBContext = commanderDBContext;
             _mapper = mapper;
         }
+
+        public Command CreateCommandRepo(Command cmd)
+        {
+            var details = _mapper.Mapper.Map<Command, TblCommand>(cmd);
+            var addDetails = _commanderDBContext.Add(details).Entity;
+            _commanderDBContext.SaveChanges();
+
+            var response = _mapper.Mapper.Map<TblCommand, Command>(addDetails);
+            return response;
+        }
+
         public IEnumerable<Command> GetAllCommandRepo()
         {
             var data = _commanderDBContext.TblCommands.ToList();

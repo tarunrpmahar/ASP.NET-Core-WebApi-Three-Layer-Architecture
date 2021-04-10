@@ -1,6 +1,8 @@
 using DataAccess;
+using DependencyInjection.Configurations.DependencyInjection;
 using Domain;
 using Domain.Contracts;
+using Domain.Contracts.Configurations;
 using Domain.Contracts.Domain;
 using Domain.Contracts.Repository;
 using Entities.Entities;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,18 +39,24 @@ namespace ApiThreeLayerArch
 
             services.AddControllers();
 
-            services.AddDbContext<CommanderDBContext>(opt => opt.UseSqlServer
-            (Configuration.GetConnectionString("CommanderConnectionString")));
+            //services.AddDbContext<CommanderDBContext>(opt => opt.UseSqlServer
+            //(Configuration.GetConnectionString("CommanderConnectionString")));           
 
-            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            //services.AddSingleton<CommandProfile>(new CommandProfile());
+            //services.AddAutoMapper(typeof(CommandProfile));
 
-            services.AddSingleton<CommandProfile>(new CommandProfile());
-            services.AddAutoMapper(typeof(CommandProfile));
+            //services.AddScoped<ICommander, SqlCommander>();
+            //services.AddScoped<ICommanderRepository, CommanderRepository>();
 
-            services.AddScoped<ICommander, SqlCommander>();
-            services.AddScoped<ICommanderRepository, CommanderRepository>();
+            services.Configure<TsmConfiguration>(this.Configuration.GetSection("TsmConfiguration"));
 
-        
+            services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<TsmConfiguration>>().Value);
+
+            var tsmConfiguration = services.BuildServiceProvider().GetService<TsmConfiguration>();
+
+            TsmServiceCollectionExtensions.AddStartupServices(services, tsmConfiguration);
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

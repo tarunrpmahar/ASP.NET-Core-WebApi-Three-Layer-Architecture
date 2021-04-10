@@ -12,6 +12,7 @@ using Utility;
 namespace ApiThreeLayerArch.Controllers
 {
     [Route("api/commands")]
+    [ApiController]
     public class CommandsController : Controller
     {
         private readonly ICommander _commander;
@@ -37,6 +38,16 @@ namespace ApiThreeLayerArch.Controllers
             var response = _commander.GetCommandById(id);
             var result = _mapper.Mapper.Map<CommandDTO>(response);
             return Ok(result);
+        }
+
+        [HttpPost]
+        public ActionResult<CommandDTO> CreateCommand(CommandDTO commandDTO)
+        {
+            var details = _mapper.Mapper.Map<CommandDTO, Command>(commandDTO);
+            var response = _commander.CreateCommand(details);
+            var result = _mapper.Mapper.Map<Command, CommandDTO>(response);
+
+            return new OkObjectResult(result);
         }
     }
 }

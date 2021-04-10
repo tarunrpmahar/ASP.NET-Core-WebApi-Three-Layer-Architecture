@@ -12,7 +12,7 @@ namespace Domain.Contracts.Repository
         bool SaveChanges();
         IEnumerable<Command> GetAllCommandRepo();
         Command GetCommandByIdRepo(int id);
-        //void CreateCommand(Command cmd);
+        Command CreateCommandRepo(Command cmd);
         //void UpdateCommand(Command cmd);
         //void DeleteCommand(Command cmd);
     }
