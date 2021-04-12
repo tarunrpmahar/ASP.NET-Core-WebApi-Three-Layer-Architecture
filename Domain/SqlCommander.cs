@@ -2,6 +2,7 @@
 using Domain.Contracts.Domain;
 using Domain.Contracts.Repository;
 using Domain.Models.Models.Domain;
+using Domain.Models.Models.PresentationDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,16 @@ namespace Domain
 
         public bool SaveChanges()
         {
-            throw new NotImplementedException();
+            return _commanderRepository.SaveChanges(); /*(_context.SaveChanges() >= 0);*/
+        }
+
+        public Command UpdateCommand(int id, Dictionary<string, object> dataKeyValue)
+        {
+            if (id < 0)
+            {
+                throw new ArgumentNullException(nameof(id), $"{nameof(id)} is needed to perform updation");
+            }
+            return _commanderRepository.UpdateCommandRepo(id, dataKeyValue);
         }
     }
 }

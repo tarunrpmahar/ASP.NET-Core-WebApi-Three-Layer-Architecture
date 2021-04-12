@@ -13,7 +13,7 @@ namespace Domain.Contracts.Repository
         IEnumerable<Command> GetAllCommandRepo();
         Command GetCommandByIdRepo(int id);
         Command CreateCommandRepo(Command cmd);
-        //void UpdateCommand(Command cmd);
+        Command UpdateCommandRepo(int id, Dictionary<string, object> dataKeyValue);
         //void DeleteCommand(Command cmd);
     }
 }

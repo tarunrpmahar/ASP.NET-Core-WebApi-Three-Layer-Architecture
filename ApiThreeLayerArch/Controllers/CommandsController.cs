@@ -3,6 +3,8 @@ using Domain.Contracts.Domain;
 using Domain.Models.Models.Domain;
 using Domain.Models.Models.PresentationDTO;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,5 +51,22 @@ namespace ApiThreeLayerArch.Controllers
 
             return new OkObjectResult(result);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateCommand(int id, [FromBody] JObject jObject)
+        {
+            try
+            {
+                var dataKeyValue = JsonConvert.DeserializeObject<Dictionary<string, object>>(jObject.ToString());
+                var response = _commander.UpdateCommand(id, dataKeyValue);
+                var result = _mapper.Mapper.Map<Command, CommandDTO>(response);
+                return new OkObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
     }
 }

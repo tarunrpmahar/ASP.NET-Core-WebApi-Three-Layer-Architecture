@@ -37,7 +37,8 @@ namespace ApiThreeLayerArch
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson();
 
             //services.AddDbContext<CommanderDBContext>(opt => opt.UseSqlServer
             //(Configuration.GetConnectionString("CommanderConnectionString")));           

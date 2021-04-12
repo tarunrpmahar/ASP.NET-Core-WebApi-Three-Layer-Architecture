@@ -13,7 +13,7 @@ namespace Domain.Contracts.Domain
         IEnumerable<Command> GetAllCommand();
         Command GetCommandById(int id);
         Command CreateCommand(Command cmd);
-        //void UpdateCommand(Command cmd);
+        Command UpdateCommand(int id, Dictionary<string, object> dataKeyValue);
         //void DeleteCommand(Command cmd);
     }
 }
