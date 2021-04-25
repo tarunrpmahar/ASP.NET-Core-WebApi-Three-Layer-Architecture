@@ -11,9 +11,15 @@ namespace ApiThreeLayerArch
 {
     public class Program
     {
+        // main entry point for your application
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            // create the host builder
+            CreateHostBuilder(args)
+                // build the host
+                .Build()
+                // and run the host, i.e. your web application
+                .Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -56,6 +56,7 @@ namespace ApiThreeLayerArch
             var tsmConfiguration = services.BuildServiceProvider().GetService<TsmConfiguration>();
 
             TsmServiceCollectionExtensions.AddStartupServices(services, tsmConfiguration);
+            services.AddApplicationInsightsTelemetry();
 
 
         }
@@ -66,6 +67,11 @@ namespace ApiThreeLayerArch
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
             }
 
             app.UseHttpsRedirection();
