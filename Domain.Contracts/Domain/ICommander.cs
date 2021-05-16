@@ -11,7 +11,7 @@ namespace Domain.Contracts.Domain
     {
         bool SaveChanges();
         IEnumerable<Command> GetAllCommand();
-        Command GetCommandById(int id);
+        Command GetCommandById(int? id);
         Command CreateCommand(Command cmd);
         Command UpdateCommand(int id, Dictionary<string, object> dataKeyValue);
         //void DeleteCommand(Command cmd);

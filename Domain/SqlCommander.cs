@@ -30,7 +30,7 @@ namespace Domain
             return _commanderRepository.GetAllCommandRepo();
         }
 
-        public Command GetCommandById(int id)
+        public Command GetCommandById(int? id)
         {
             return _commanderRepository.GetCommandByIdRepo(id);
         }

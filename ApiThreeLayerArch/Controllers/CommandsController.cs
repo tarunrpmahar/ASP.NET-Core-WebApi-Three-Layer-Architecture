@@ -13,8 +13,9 @@ using Utility;
 
 namespace ApiThreeLayerArch.Controllers
 {
-    [Route("api/commands")]
     [ApiController]
+    [Route("api/commands")]
+    
     public class CommandsController : Controller
     {
         private readonly ICommander _commander;
@@ -27,7 +28,7 @@ namespace ApiThreeLayerArch.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Command>> Get()
+        public ActionResult Get()  //<IEnumerable<Command>>
         {
             var response = _commander.GetAllCommand();
             var result = _mapper.Mapper.Map<IEnumerable<Command>, IEnumerable<CommandDTO>>(response);
@@ -53,10 +54,12 @@ namespace ApiThreeLayerArch.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateCommand(int id, [FromBody] JObject jObject)
+        public IActionResult UpdateCommand(int id, [FromBody]  JObject jObject) // 
         {
             try
             {
+                //var tarun = jObject.ToString();
+                //DeserializeObject = json->obj
                 var dataKeyValue = JsonConvert.DeserializeObject<Dictionary<string, object>>(jObject.ToString());
                 var response = _commander.UpdateCommand(id, dataKeyValue);
                 var result = _mapper.Mapper.Map<Command, CommandDTO>(response);

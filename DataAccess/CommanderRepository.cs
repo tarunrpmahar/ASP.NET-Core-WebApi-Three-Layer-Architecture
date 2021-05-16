@@ -44,7 +44,7 @@ namespace DataAccess
            //return _context.tblCommands.ToList();
         }
 
-        public Command GetCommandByIdRepo(int id)
+        public Command GetCommandByIdRepo(int? id)
         {
             var data = _commanderDBContext.TblCommands.FirstOrDefault(x => x.Id == id);
             var responseData = _mapper.Mapper.Map<Command>(data);
