@@ -28,6 +28,7 @@ namespace DataAccess
         {
             var details = _mapper.Mapper.Map<Command, TblCommand>(cmd);
             var addDetails = _commanderDBContext.Add(details).Entity;
+
             _commanderDBContext.SaveChanges();
 
             var response = _mapper.Mapper.Map<TblCommand, Command>(addDetails);

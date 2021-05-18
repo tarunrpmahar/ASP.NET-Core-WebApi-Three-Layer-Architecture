@@ -30,28 +30,70 @@ namespace ApiThreeLayerArch.Controllers
         [HttpGet]
         public ActionResult Get()  //<IEnumerable<Command>>
         {
-            var response = _commander.GetAllCommand();
-            var result = _mapper.Mapper.Map<IEnumerable<Command>, IEnumerable<CommandDTO>>(response);
-            return new OkObjectResult(result);
+            try
+            {
+                var response = _commander.GetAllCommand();
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                var result = _mapper.Mapper.Map<IEnumerable<Command>, IEnumerable<CommandDTO>>(response);
+                return new OkObjectResult(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+            
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Command> GetById(int id)
+        public ActionResult GetById(int? id)   //<Command>
         {
-            var response = _commander.GetCommandById(id);
-            var result = _mapper.Mapper.Map<CommandDTO>(response);
-            return Ok(result);
+            if(id == null)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var response = _commander.GetCommandById(id);
+                if(response == null)
+                {
+                    return NotFound();
+                }
+                var result = _mapper.Mapper.Map<CommandDTO>(response);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
-        public ActionResult<CommandDTO> CreateCommand(CommandDTO commandDTO)
+        public ActionResult CreateCommand(CommandDTO commandDTO) //<CommandDTO>
         {
             var details = _mapper.Mapper.Map<CommandDTO, Command>(commandDTO);
+
             var response = _commander.CreateCommand(details);
+
             var result = _mapper.Mapper.Map<Command, CommandDTO>(response);
 
             return new OkObjectResult(result);
         }
+
+        //[HttpPost]
+        /*public ActionResult CreateCommand(Command command)
+        {
+            if(ModelState.IsValid)
+            {
+                var response = _commander.CreateCommand(command);
+                return new OkObjectResult(response);
+            }
+
+            return BadRequest();          
+        }*/
 
         [HttpPut("{id}")]
         public IActionResult UpdateCommand(int id, [FromBody]  JObject jObject) // 
