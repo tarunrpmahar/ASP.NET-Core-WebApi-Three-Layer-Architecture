@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Domain.Models.Models.Domain;
 using Domain.Models.Models.PresentationDTO;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Logging;
 
 namespace ApiThreelayerArch.UnitTestingUsingxUnit
 {
@@ -16,10 +17,12 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
     {
         private readonly Mock<ICommander> _commanderMock;
         private readonly CommandProfile _mapperMock;
+        private readonly Mock<ILogger<CommandsController>> _logger;
         public CommandsUnitTest()
         {
             _commanderMock = new Mock<ICommander>();
             _mapperMock = new CommandProfile();
+            _logger = new Mock<ILogger<CommandsController>>();
         }
 
         public static IList<ValidationResult> Validate(object model)
@@ -44,7 +47,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
             };
             _commanderMock.Setup(x => x.GetAllCommand()).Returns(commandResponse);
 
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
 
             //Act
             var response = controller.Get();
@@ -128,24 +131,6 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
             Assert.IsType<BadRequestResult>(response);
         }
 
-        //[Fact]
-        /*public void GetById_matchResult()
-        {
-            //Arrange
-            int? getId = 2;
-
-            var commandResponse = new Command { Id = 2, HowTo = "Integration testing", Line = "testing", Platform = ".net framework" };
-            _commanderMock.Setup(x => x.GetCommandById(getId)).Returns(commandResponse);
-
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock);
-
-            //Act
-            var response = controller.GetById(getId);
-
-            //Assert
-            
-        }*/
-
         [Fact]
         public void CreateCommand_Return_OkResult()
         {
@@ -181,16 +166,15 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
         public void CreateCommand_InvalidData_Return_BadRequestResult()
         {
             //Arrange
-            var commandDto = new CommandDTO { Id = 1, HowTo = "Add Details", Line = "checking", Platform = "asp.net core" };
+            var commandDto = new CommandDTO { Id = 1, HowTo = "Test HowTo can't be more than twenty characteres", Line = "checking", Platform = "asp.net core" };
             var command = new Command { Id = 1, HowTo = "Test HowTo can't be more than twenty characteres", Line = "checking", Platform = "asp.net core" };
 
             _commanderMock.Setup(x => x.CreateCommand(command)).Returns(command);
 
             var controller = new CommandsController(_commanderMock.Object, _mapperMock);
-
+            controller.ModelState.AddModelError("test", "Error Message");
             //Act
             var response = controller.CreateCommand(commandDto);
-            //var response = controller.CreateCommand(commandDto);
 
             //Assert
             Assert.IsType<BadRequestResult>(response);

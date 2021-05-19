@@ -3,6 +3,7 @@ using Domain.Contracts.Domain;
 using Domain.Models.Models.Domain;
 using Domain.Models.Models.PresentationDTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -15,21 +16,24 @@ namespace ApiThreeLayerArch.Controllers
 {
     [ApiController]
     [Route("api/commands")]
-    
+
     public class CommandsController : Controller
     {
         private readonly ICommander _commander;
         private readonly CommandProfile _mapper;
+        private readonly ILogger<CommandsController> _logger;
 
-        public CommandsController(ICommander commander, CommandProfile mapper)    //IMapper mapper
+        public CommandsController(ICommander commander, CommandProfile mapper, ILogger<CommandsController> logger)    //IMapper mapper   
         {
             _commander = commander;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
         public ActionResult Get()  //<IEnumerable<Command>>
         {
+            _logger.LogInformation("api/commands  called from Command Controller");
             try
             {
                 var response = _commander.GetAllCommand();
@@ -44,13 +48,13 @@ namespace ApiThreeLayerArch.Controllers
             {
                 return BadRequest();
             }
-            
+
         }
 
         [HttpGet("{id}")]
         public ActionResult GetById(int? id)   //<Command>
         {
-            if(id == null)
+            if (id == null)
             {
                 return BadRequest();
             }
@@ -58,7 +62,7 @@ namespace ApiThreeLayerArch.Controllers
             try
             {
                 var response = _commander.GetCommandById(id);
-                if(response == null)
+                if (response == null)
                 {
                     return NotFound();
                 }
@@ -74,13 +78,17 @@ namespace ApiThreeLayerArch.Controllers
         [HttpPost]
         public ActionResult CreateCommand(CommandDTO commandDTO) //<CommandDTO>
         {
-            var details = _mapper.Mapper.Map<CommandDTO, Command>(commandDTO);
+            if (ModelState.IsValid)
+            {
+                var details = _mapper.Mapper.Map<CommandDTO, Command>(commandDTO);
+                var response = _commander.CreateCommand(details);
 
-            var response = _commander.CreateCommand(details);
+                var result = _mapper.Mapper.Map<Command, CommandDTO>(response);
 
-            var result = _mapper.Mapper.Map<Command, CommandDTO>(response);
+                return new OkObjectResult(result);
+            }
 
-            return new OkObjectResult(result);
+            return BadRequest();
         }
 
         //[HttpPost]
@@ -96,7 +104,7 @@ namespace ApiThreeLayerArch.Controllers
         }*/
 
         [HttpPut("{id}")]
-        public IActionResult UpdateCommand(int id, [FromBody]  JObject jObject) // 
+        public IActionResult UpdateCommand(int id, [FromBody] JObject jObject) // 
         {
             try
             {
