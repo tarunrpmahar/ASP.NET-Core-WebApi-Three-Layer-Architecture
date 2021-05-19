@@ -153,7 +153,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
                     commandResponse.Add(cmd);
                 }).Verifiable();
 
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
 
             //Act
             var response = controller.CreateCommand(commandDto);
@@ -171,7 +171,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
 
             _commanderMock.Setup(x => x.CreateCommand(command)).Returns(command);
 
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
             controller.ModelState.AddModelError("test", "Error Message");
             //Act
             var response = controller.CreateCommand(commandDto);
