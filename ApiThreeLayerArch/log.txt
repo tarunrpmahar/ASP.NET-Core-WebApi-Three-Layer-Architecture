@@ -76,3 +76,24 @@ FROM [tblCommands] AS [t]"
  Request starting HTTP/2 GET https://localhost:5001/favicon.ico - -
  HTTP "GET" "/favicon.ico" responded 404 in 1.0902 ms
  Request finished HTTP/2 GET https://localhost:5001/favicon.ico - - - 404 0 - 5.8970ms
+ Application Starting up
+ Now listening on: "https://localhost:5001"
+ Now listening on: "http://localhost:5000"
+ Application started. Press Ctrl+C to shut down.
+ Hosting environment: "Development"
+ Content root path: "T:\CELEBAL\Learning\Solutions\ApiThreeLayerSolution\ApiThreeLayerArch"
+ Request starting HTTP/2 GET https://localhost:5001/api/commands - -
+ Executing endpoint '"ApiThreeLayerArch.Controllers.CommandsController.Get (ApiThreeLayerArch)"'
+ Route matched with "{action = \"Get\", controller = \"Commands\"}". Executing controller action with signature "Microsoft.AspNetCore.Mvc.ActionResult Get()" on controller "ApiThreeLayerArch.Controllers.CommandsController" ("ApiThreeLayerArch").
+ Executing action method "ApiThreeLayerArch.Controllers.CommandsController.Get (ApiThreeLayerArch)" - Validation state: Valid
+ api/commands  called from Command Controller
+ Entity Framework Core "5.0.5" initialized '"CommanderDBContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None"
+ Executed DbCommand ("90"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [t].[Id], [t].[HowTo], [t].[Line], [t].[Platform]
+FROM [tblCommands] AS [t]"
+ Executed action method "ApiThreeLayerArch.Controllers.CommandsController.Get (ApiThreeLayerArch)", returned result "Microsoft.AspNetCore.Mvc.OkObjectResult" in 1652.0454ms.
+ Executing "OkObjectResult", writing value of type '"System.Collections.Generic.List`1[[Domain.Models.Models.PresentationDTO.CommandDTO, Domain.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+ Executed action "ApiThreeLayerArch.Controllers.CommandsController.Get (ApiThreeLayerArch)" in 2206.2633ms
+ Executed endpoint '"ApiThreeLayerArch.Controllers.CommandsController.Get (ApiThreeLayerArch)"'
+ HTTP "GET" "/api/commands" responded 200 in 2343.5861 ms
+ Request finished HTTP/2 GET https://localhost:5001/api/commands - - - 200 738 application/json;+charset=utf-8 2366.8986ms
