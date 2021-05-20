@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>3cd9fe83-d071-4ad7-a194-5eb2c141ffaa</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/06f1efd4-8624-47d5-81c7-c128b0f14676/resourceGroups/SerilogResource/providers/microsoft.insights/components/SerilogAppService</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
