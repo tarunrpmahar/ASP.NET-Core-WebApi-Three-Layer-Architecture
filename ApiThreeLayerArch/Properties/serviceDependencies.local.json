@@ -10,7 +10,7 @@
       "secretStore": "LocalSecretsFile"
     },
     "mssql1": {
-      "type": "mssql.local",
+      "type": "mssql.onprem",
       "connectionId": "TsmConfiguration/CommanderConnectionString",
       "secretStore": "LocalSecretsFile"
     }
