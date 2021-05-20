@@ -69,7 +69,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
                 new Command{Id=4, HowTo="razor page", Line="web ui", Platform="asp.net framework"}
             };
             _commanderMock.Setup(x => x.GetAllCommand()).Returns(() => null);
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
             
             //Act
             var response = controller.Get();
@@ -86,7 +86,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
             var commandResponse = new Command { Id = 2, HowTo = "Integration testing", Line = "testing", Platform = ".net framework" };
             _commanderMock.Setup(x => x.GetCommandById(getId)).Returns(commandResponse);
 
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
 
             //Act
             var response = controller.GetById(getId);
@@ -104,7 +104,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
             var commandResponse = new Command { Id = 2, HowTo = "Integration testing", Line = "testing", Platform = ".net framework" };
             _commanderMock.Setup(x => x.GetCommandById(getId)).Returns(() => null);
 
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
 
             //Act
             var response = controller.GetById(getId);
@@ -122,7 +122,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
             var commandResponse = new Command { Id = 2, HowTo = "Integration testing", Line = "testing", Platform = ".net framework" };
             _commanderMock.Setup(x => x.GetCommandById(getId)).Returns(() => null);
 
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
 
             //Act
             var response = controller.GetById(getId);
@@ -193,7 +193,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
 
             //_commanderMock.Setup(x => x.CreateCommand(command)).Returns(command);
 
-            //var controller = new CommandsController(_commanderMock.Object, _mapperMock);
+            //var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
 
             //Act
             var result = CommandsUnitTest.Validate(model);
