@@ -10,6 +10,7 @@ using Domain.Models.Models.Domain;
 using Domain.Models.Models.PresentationDTO;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Logging;
+using Microsoft.ApplicationInsights;
 
 namespace ApiThreelayerArch.UnitTestingUsingxUnit
 {
@@ -18,11 +19,13 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
         private readonly Mock<ICommander> _commanderMock;
         private readonly CommandProfile _mapperMock;
         private readonly Mock<ILogger<CommandsController>> _logger;
+        private readonly TelemetryClient _telemetryClient;
         public CommandsUnitTest()
         {
             _commanderMock = new Mock<ICommander>();
             _mapperMock = new CommandProfile();
             _logger = new Mock<ILogger<CommandsController>>();
+            _telemetryClient = new TelemetryClient();
         }
 
         public static IList<ValidationResult> Validate(object model)
@@ -47,7 +50,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
             };
             _commanderMock.Setup(x => x.GetAllCommand()).Returns(commandResponse);
 
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object, _telemetryClient);
 
             //Act
             var response = controller.Get();
@@ -69,7 +72,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
                 new Command{Id=4, HowTo="razor page", Line="web ui", Platform="asp.net framework"}
             };
             _commanderMock.Setup(x => x.GetAllCommand()).Returns(() => null);
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object, _telemetryClient);
             
             //Act
             var response = controller.Get();
@@ -86,7 +89,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
             var commandResponse = new Command { Id = 2, HowTo = "Integration testing", Line = "testing", Platform = ".net framework" };
             _commanderMock.Setup(x => x.GetCommandById(getId)).Returns(commandResponse);
 
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object, _telemetryClient);
 
             //Act
             var response = controller.GetById(getId);
@@ -104,7 +107,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
             var commandResponse = new Command { Id = 2, HowTo = "Integration testing", Line = "testing", Platform = ".net framework" };
             _commanderMock.Setup(x => x.GetCommandById(getId)).Returns(() => null);
 
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object, _telemetryClient);
 
             //Act
             var response = controller.GetById(getId);
@@ -122,7 +125,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
             var commandResponse = new Command { Id = 2, HowTo = "Integration testing", Line = "testing", Platform = ".net framework" };
             _commanderMock.Setup(x => x.GetCommandById(getId)).Returns(() => null);
 
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object, _telemetryClient);
 
             //Act
             var response = controller.GetById(getId);
@@ -153,7 +156,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
                     commandResponse.Add(cmd);
                 }).Verifiable();
 
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object, _telemetryClient);
 
             //Act
             var response = controller.CreateCommand(commandDto);
@@ -171,7 +174,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
 
             _commanderMock.Setup(x => x.CreateCommand(command)).Returns(command);
 
-            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
+            var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object, _telemetryClient);
             controller.ModelState.AddModelError("test", "Error Message");
             //Act
             var response = controller.CreateCommand(commandDto);
@@ -193,7 +196,7 @@ namespace ApiThreelayerArch.UnitTestingUsingxUnit
 
             //_commanderMock.Setup(x => x.CreateCommand(command)).Returns(command);
 
-            //var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object);
+            //var controller = new CommandsController(_commanderMock.Object, _mapperMock, _logger.Object, _telemetryClient);
 
             //Act
             var result = CommandsUnitTest.Validate(model);

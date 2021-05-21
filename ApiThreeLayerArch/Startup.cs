@@ -37,6 +37,7 @@ namespace ApiThreeLayerArch
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(Log.Logger);
 
             services.AddControllers()
                 .AddNewtonsoftJson();
@@ -51,15 +52,15 @@ namespace ApiThreeLayerArch
             //services.AddScoped<ICommanderRepository, CommanderRepository>();
 
             services.Configure<TsmConfiguration>(this.Configuration.GetSection("TsmConfiguration"));
-
             services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<TsmConfiguration>>().Value);
-
             var tsmConfiguration = services.BuildServiceProvider().GetService<TsmConfiguration>();
-
             TsmServiceCollectionExtensions.AddStartupServices(services, tsmConfiguration);
-            services.AddApplicationInsightsTelemetry();
+            //services.AddApplicationInsightsTelemetry();
 
+            var instrumentationKey = Configuration.GetSection("APPINSIGHTS_INSTRUMENTATIONKEY")?.Value
+                                    ?? Configuration.GetSection("ApplicationInsights:InstrumentationKey")?.Value;
 
+            services.AddApplicationInsightsTelemetry(instrumentationKey);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
