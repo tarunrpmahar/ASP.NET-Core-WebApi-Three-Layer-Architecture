@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Utility;
+using Serilog;
 
 namespace ApiThreeLayerArch.Controllers
 {
@@ -36,8 +37,11 @@ namespace ApiThreeLayerArch.Controllers
         [HttpGet]
         public ActionResult Get()  //<IEnumerable<Command>>
         {
-            _telemetryClient.TrackEvent("TSM in GET | telemetry");
-            _logger.LogInformation("TSM in GET | serilog");
+            _telemetryClient.TrackEvent("Logging - in GET (controller) | telemetry");
+            _logger.LogInformation("Logging - in GET (controller) | serilog");
+
+            //throw new UnauthorizedAccessException();
+
             try
             {
                 var response = _commander.GetAllCommand();
@@ -52,14 +56,13 @@ namespace ApiThreeLayerArch.Controllers
             {
                 return BadRequest();
             }
-
         }
 
         [HttpGet("{id}")]
         public ActionResult GetById(int? id)   //<Command>
         {
-            _telemetryClient.TrackEvent("TSM in GetById | telemetry");
-            _logger.LogInformation("TSM in GetById | serilog");
+            _telemetryClient.TrackEvent("Logging - in GetById (controller) | telemetry");
+            _logger.LogInformation("Logging - in GetById (controller) | serilog");
             if (id == null)
             {
                 return BadRequest();
@@ -70,8 +73,8 @@ namespace ApiThreeLayerArch.Controllers
                 var response = _commander.GetCommandById(id);
                 if (response == null)
                 {
-                    _telemetryClient.TrackEvent("TSM Id not valid | telemetry");
-                    _logger.LogInformation("TSM Id not valid try | serilog");
+                    _telemetryClient.TrackEvent("Logging - Id not valid (controller) | telemetry");
+                    _logger.LogInformation("Logging - Id not valid try (controller) | serilog");
                     return NotFound();
                 }
                 var result = _mapper.Mapper.Map<CommandDTO>(response);
@@ -79,8 +82,8 @@ namespace ApiThreeLayerArch.Controllers
             }
             catch (Exception)
             {
-                _telemetryClient.TrackEvent("TSM GetById | telemetry");
-                _logger.LogInformation("TSM Bad request | serilog");
+                _telemetryClient.TrackEvent("Logging - GetById (controller) | telemetry");
+                _logger.LogInformation("Logging - Bad request (controller) | serilog");
                 return BadRequest();
             }
         }
@@ -88,12 +91,15 @@ namespace ApiThreeLayerArch.Controllers
         [HttpPost]
         public ActionResult CreateCommand(CommandDTO commandDTO) //<CommandDTO>
         {
-            _telemetryClient.TrackEvent("TSM in CreateCommand | telemetry");
-            _logger.LogInformation("TSM in CreateCommand | serilog");
+            _telemetryClient.TrackEvent("Logging - in CreateCommand (controller) | telemetry");
+            _logger.LogInformation("Logging - in CreateCommand (controller) | serilog");
+
+            //throw new Exce
+
             if (ModelState.IsValid)
             {
-                _telemetryClient.TrackEvent("TSM Model Valid in CreateCommand | telemetry");
-                _logger.LogInformation("TSM Model Valid in CreateCommand | serilog");
+                _telemetryClient.TrackEvent("Logging - Model Valid in CreateCommand (controller) | telemetry");
+                _logger.LogInformation("Logging - Model Valid in CreateCommand (controller) | serilog");
 
                 var details = _mapper.Mapper.Map<CommandDTO, Command>(commandDTO);
                 var response = _commander.CreateCommand(details);
@@ -104,29 +110,21 @@ namespace ApiThreeLayerArch.Controllers
             }
             else
             {
-                _telemetryClient.TrackEvent("TSM Model Not Valid in CreateCommand | telemetry");
-                _logger.LogInformation("TSM Model Not Valid in CreateCommand | serilog");
+                _telemetryClient.TrackEvent("Logging - Model Not Valid in CreateCommand (controller) | telemetry");
+                _logger.LogInformation("Logging - Model Not Valid in CreateCommand (controller) | serilog");
+                //throw new Exception("not correct tsm");
                 return BadRequest();
-            }          
-        }
-
-        //[HttpPost]
-        /*public ActionResult CreateCommand(Command command)
-        {
-            if(ModelState.IsValid)
-            {
-                var response = _commander.CreateCommand(command);
-                return new OkObjectResult(response);
             }
 
-            return BadRequest();          
-        }*/
+        }
 
         [HttpPut("{id}")]
         public IActionResult UpdateCommand(int id, [FromBody] JObject jObject) // 
         {
             try
             {
+                _telemetryClient.TrackEvent("Logging - in UpdateCommand (controller) | telemetry");
+                _logger.LogInformation("Logging - in UpdateCommand (controller) | serilog");
                 //var tarun = jObject.ToString();
                 //DeserializeObject = json->obj
                 var dataKeyValue = JsonConvert.DeserializeObject<Dictionary<string, object>>(jObject.ToString());

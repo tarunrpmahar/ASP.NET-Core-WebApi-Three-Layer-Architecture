@@ -9,6 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Identity;
+using System.IO;
+using System.Reflection;
 
 namespace ApiThreeLayerArch
 {
@@ -17,19 +20,34 @@ namespace ApiThreeLayerArch
         // main entry point for your application
         public static void Main(string[] args)
         {
+            /*var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            if(environment == Environments.Development)
+            {
+
+            }*/
+
             //Read Configuration from appsetting.json
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
 
+            //string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Logs", "log.json");
+
             var telemetryConfiguration = TelemetryConfiguration
             .CreateDefault();
+
+            //telemetryConfiguration.InstrumentationKey = configuration["APPINSIGHTS_INSTRUMENTATIONKEY"];
+
             telemetryConfiguration.InstrumentationKey =
-                "5ba9683a-1a52-409a-82c7-0012401a70e5";
+                "ee3cf2a0-c20b-467c-8309-7a04ad32cd62";
 
             //Initialize Logger
             Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)   //.WriteTo.Console(new RenderedCompactJsonFormatter())
+                .ReadFrom.Configuration(configuration)
+                //.WriteTo.Console(new RenderedCompactJsonFormatter()) 
+                //.WriteTo.File(filePath, rollingInterval: RollingInterval.Day)
+                //.WriteTo.RollingFile(new CompactJsonFormatter(), "./logs/app-{Date}.json")
                 .WriteTo.ApplicationInsights(telemetryConfiguration, TelemetryConverter.Traces)
                 .CreateLogger();
 
@@ -55,7 +73,14 @@ namespace ApiThreeLayerArch
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-            .UseSerilog()   ////Uses Serilog instead of default .NET Logger
+                //.ConfigureAppConfiguration((context, config) =>
+                //{
+                //    var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
+                //    config.AddAzureKeyVault(
+                //    keyVaultEndpoint,
+                //    new DefaultAzureCredential());
+                //})
+                .UseSerilog()   ////Uses Serilog instead of default .NET Logger
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

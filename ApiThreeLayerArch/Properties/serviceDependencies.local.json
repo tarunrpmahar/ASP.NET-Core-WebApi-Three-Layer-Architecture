@@ -1,18 +1,18 @@
 {
   "dependencies": {
-    "secrets1": {
-      "type": "secrets.user"
-    },
-    "mssql1": {
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/apithreelayerarchserver/databases/CommanderDbToAzureSql",
-      "type": "mssql.azure",
-      "connectionId": "TsmConfiguration/CommanderConnectionString",
-      "secretStore": "LocalSecretsFile"
-    },
     "appInsights1": {
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/microsoft.insights/components/ApiThreeLayerArch",
       "type": "appInsights.azure",
       "connectionId": "APPINSIGHTS_CONNECTIONSTRING",
+      "secretStore": "LocalSecretsFile"
+    },
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/apithreelayerarchserver/databases/CommanderDB",
+      "type": "mssql.azure",
+      "connectionId": "TsmConfiguration/CommanderConnectionString",
       "secretStore": "LocalSecretsFile"
     }
   }

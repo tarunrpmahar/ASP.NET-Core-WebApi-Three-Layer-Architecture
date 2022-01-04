@@ -13,6 +13,7 @@ namespace Domain.Models.Models.PresentationDTO
 
         [StringLength(20, ErrorMessage = "HowTo length can't be more than 20.")]
         [Required]
+        [RegularExpression(".*[a-zA-Z]+.*",ErrorMessage ="Only numeric not allowed")]
         public string HowTo { get; set; }
 
         [Required]

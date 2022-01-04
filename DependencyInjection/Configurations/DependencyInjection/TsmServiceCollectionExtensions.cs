@@ -50,7 +50,6 @@ namespace DependencyInjection.Configurations.DependencyInjection
             {
                 options.UseSqlServer(ConnectionString);
             });
-
         }
     }
 }
