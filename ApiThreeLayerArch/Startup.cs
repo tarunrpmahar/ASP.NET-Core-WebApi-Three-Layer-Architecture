@@ -1,28 +1,13 @@
 using ApiThreeLayerArch.Middlewares;
-using DataAccess;
 using DependencyInjection.Configurations.DependencyInjection;
-using Domain;
-using Domain.Contracts;
 using Domain.Contracts.Configurations;
-using Domain.Contracts.Domain;
-using Domain.Contracts.Repository;
-using Entities.Entities;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Utility;
 
 namespace ApiThreeLayerArch
 {
@@ -62,6 +47,9 @@ namespace ApiThreeLayerArch
                                     ?? Configuration.GetSection("ApplicationInsights:InstrumentationKey")?.Value;
 
             services.AddApplicationInsightsTelemetry(instrumentationKey);
+
+            services.AddHangfire(x => x.UseSqlServerStorage("<connection string>"));
+            services.AddHangfireServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +58,7 @@ namespace ApiThreeLayerArch
 
             app.UseMiddleware<ExceptionMiddleware>();
 
+            app.UseHangfireDashboard();
             //if (env.IsDevelopment())
             //{
             //    app.UseDeveloperExceptionPage();
