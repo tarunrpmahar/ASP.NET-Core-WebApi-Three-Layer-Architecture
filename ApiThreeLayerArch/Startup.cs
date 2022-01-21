@@ -48,7 +48,7 @@ namespace ApiThreeLayerArch
 
             services.AddApplicationInsightsTelemetry(instrumentationKey);
 
-            services.AddHangfire(x => x.UseSqlServerStorage("<connection string>"));
+            services.AddHangfire(x => x.UseSqlServerStorage("<add connection string>"));
             services.AddHangfireServer();
         }
 
